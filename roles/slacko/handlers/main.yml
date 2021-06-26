@@ -1,0 +1,15 @@
+---
+# handlers file for slacko
+- name: "restart mongodb"
+  systemd:
+    name: mongodb
+    state: started
+    enable: yes
+
+- name: "copy.service"
+  ansible.builtin.service:
+    name: slacko-api
+    state: restarted
+    enabled: yes
+  tags: 
+     - start.service
