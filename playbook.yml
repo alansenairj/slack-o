@@ -1,0 +1,52 @@
+- hosts: local
+  gather_facts: True
+  become: yes
+
+  tasks:
+
+  - name: Clone a repo with separate git directory
+    ansible.builtin.git:
+      repo: https://github.com/LeonardoDG2084/iaac_slacko-api
+      dest: /opt/slacko-api/
+    tags:
+     - gitclone
+
+ 
+  - name: Instalaço do MongoDB
+    apt: 
+      name: mongodb
+      state: present
+      update_cache: yes
+    tags:
+      - mongodb
+    notify:
+        - start mongodb
+
+  - name: Instalaço dos requerimentos do Python
+    pip:
+      requirements: /opt/slacko-api/requeriments.txt
+    tags: 
+      - python
+
+  
+
+  - name: Copiar arquivo que transforma script em service
+    copy:
+      src: /opt/slacko-api/slacko-api.service
+      dest: /etc/systemd/system
+      owner: root
+      group: root
+    notify:
+      - Start slacko-api.service
+   
+
+
+  - name: Iniciando o slacko-api
+    ansible.builtin.service:
+      name: slacko-api
+      state: reloaded
+      enabled: yes
+    tags: 
+      - start.service
+
+ 
