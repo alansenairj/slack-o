@@ -1,12 +1,6 @@
 ---
 # tasks file for slacko
 
-  - name: print to stdout
-    command: echo "hello"
-    register: hello
-    notify:
-       - cade o shell
-
 
 
   - name: Clone a repo with separate git directory
@@ -23,7 +17,8 @@
        state: present
     notify:
        - ntp
-       - cu
+       - crond
+       - env
     tags:
        - ntp   
      
@@ -38,8 +33,6 @@
       - horacerta
      
 
-
-
   - name: Instalaçao do MongoDB
     apt: 
       name: mongodb
@@ -50,11 +43,13 @@
     notify:
         - restart mongodb
 
+
   - name: Instalaço dos requerimentos do Python
     pip:
       requirements: /opt/slacko-api/requeriments.txt
     tags: 
       - python
+
 
   - name: Criar o diretório pela variável do path
     file:
@@ -70,9 +65,9 @@
         dest: "{{ path }}"
         owner: root
         group: root
+        mode: 0755
     tags: 
       - script
-
 
 
 
@@ -84,14 +79,10 @@
       group: root
     notify:
       - copy.service
-     
+      - start.service
     tags: 
       - copy.service
 
 
-
-
-  - name: reload
-    shell: systemctl daemon.reload
 
 

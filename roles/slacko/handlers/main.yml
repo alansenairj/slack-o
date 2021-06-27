@@ -8,27 +8,10 @@
 
 
 - name: "ntp"
-  command: |
-     export TZ=America/Sao_Paulo
-     echo 'funciona o export porra'
+  community.general.timezone:
+    name: America/Sao_Paulo
+    environment: "{{ env }}"
   
-
-- name: "cade o shell"
-  command: echo "hello"
-  register: hello
-- debug: msg="{{ hello.stdout_lines }}"
-- debug: msg="{{ hello.stderr }}"
-
-     
-
-- name: "horacerta"
-  service:
-     name: ntp
-     state: restarted
-
-
-
-
 
 - name: "restart mongodb"
   systemd:
@@ -39,10 +22,20 @@
 - name: "copy.service"
   ansible.builtin.service:
     name: slacko-api
-    state: restarted
+    state: reloaded
     enabled: yes
   tags: 
      - start.service
+
+- name: "start.service"
+  ansible.builtin.systemd:
+     state: restarted
+     name: slacko-api
+     enabled: yes
+     masked: no
+     daemon_reload: yes
+     daemon_reexec: yes
+
 
 
 
