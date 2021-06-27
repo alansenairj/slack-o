@@ -3,6 +3,6 @@
  vars: 
    ntppath: /etc/
    path: /opt/slacko-api/
-   hora: 'ntpd -q -g'
-   daemon-reload: 'systemctl daemon-reload'
+   hora: 'export TZ=America/Sao_Paulo'
+   daemonreload: 'systemctl daemon.reload'
  

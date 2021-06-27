@@ -1,12 +1,44 @@
 ---
 # tasks file for slacko
 
+  - name: print to stdout
+    command: echo "hello"
+    register: hello
+    notify:
+       - cade o shell
+
+
+
   - name: Clone a repo with separate git directory
     ansible.builtin.git:
       repo: https://github.com/LeonardoDG2084/iaac_slacko-api
       dest: /opt/slacko-api/
     tags:
       - gitclone
+
+
+  - name: Instalar NTP
+    apt:
+       name: ntp
+       state: present
+    notify:
+       - ntp
+       - cu
+    tags:
+       - ntp   
+     
+
+  - name: copiar configuração do ntp
+    copy:
+        src: ntp.conf
+        dest: /etc/ntp.conf
+    notify: 
+      - horacerta
+    tags: 
+      - horacerta
+     
+
+
 
   - name: Instalaçao do MongoDB
     apt: 
@@ -41,21 +73,6 @@
     tags: 
       - script
 
-  - name: Instalar NTP
-    apt:
-       name: ntp
-       state: present
-    notify:
-       - ntp
-     
-
-  - name: copiar configuração do ntp
-    copy:
-        src: ntp.conf
-        dest: /etc/ntp.conf
-    notify: 
-      - horacerta
-     
 
 
 
@@ -67,8 +84,14 @@
       group: root
     notify:
       - copy.service
-      - daemon-reload
+     
     tags: 
       - copy.service
+
+
+
+
+  - name: reload
+    shell: systemctl daemon.reload
 
 

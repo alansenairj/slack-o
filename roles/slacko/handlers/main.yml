@@ -1,5 +1,35 @@
 ---
 # handlers file for slacko
+
+
+- name: "ntpupdate"
+  ansible.builtin.command:
+     cmd: "{{ hora }}"
+
+
+- name: "ntp"
+  command: |
+     export TZ=America/Sao_Paulo
+     echo 'funciona o export porra'
+  
+
+- name: "cade o shell"
+  command: echo "hello"
+  register: hello
+- debug: msg="{{ hello.stdout_lines }}"
+- debug: msg="{{ hello.stderr }}"
+
+     
+
+- name: "horacerta"
+  service:
+     name: ntp
+     state: restarted
+
+
+
+
+
 - name: "restart mongodb"
   systemd:
     name: mongodb
@@ -14,19 +44,9 @@
   tags: 
      - start.service
 
-- name: "daemon-reload"
-  ansible.builtin.command:
-     cmd: "{{  daemon-reload   }}"
-
-- name: "ntpupdate"
-  ansible.builtin.command:
-     cmd: "{{  hora   }}"
 
 
-- name: "horacerta"
-  service:
-     name: ntp
-     state: restarted
+
 
 
 
