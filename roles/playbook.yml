@@ -2,7 +2,9 @@
  - hosts: remoto
    gather_facts: True
    become: yes
-   vars:
-    path: /opt/slacko-api/
    roles: 
     - slacko
+
+   vars:
+      ntppath: /etc/
+      path: /opt/slacko-api/

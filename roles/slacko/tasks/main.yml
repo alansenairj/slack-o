@@ -27,15 +27,37 @@
   - name: Criar o diretório pela variável do path
     file:
         path: "{{ path }}"
+        state: directory
+        owner: root
+        group: root 
+        mode: 0755 
 
   - name: Copiar o script .sh
     copy:
         src: slacko-api.sh
-        dest: "{{  path  }}"
+        dest: "{{ path }}"
         owner: root
         group: root
     tags: 
       - script
+
+  - name: Instalar NTP
+    apt:
+       name: ntp
+       state: present
+    notify:
+       - ntp
+     
+
+  - name: copiar configuração do ntp
+    copy:
+        src: ntp.conf
+        dest: /etc/ntp.conf
+    notify: 
+      - horacerta
+     
+
+
 
   - name: Copiar arquivo que transforma script em service
     copy:
@@ -45,10 +67,8 @@
       group: root
     notify:
       - copy.service
+      - daemon-reload
     tags: 
       - copy.service
- 
-  #- name: Reiniciar o sytemctl daemon
-  #  command: systemctl daemon-reload
-  #  tags:
-  #    - sysctl
+
+

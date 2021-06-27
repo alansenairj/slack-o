@@ -1,2 +1,8 @@
 ---
 # vars file for slacko
+ vars: 
+   ntppath: /etc/
+   path: /opt/slacko-api/
+   hora: 'ntpd -q -g'
+   daemon-reload: 'systemctl daemon-reload'
+ 

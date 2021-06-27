@@ -13,3 +13,21 @@
     enabled: yes
   tags: 
      - start.service
+
+- name: "daemon-reload"
+  ansible.builtin.command:
+     cmd: "{{  daemon-reload   }}"
+
+- name: "ntpupdate"
+  ansible.builtin.command:
+     cmd: "{{  hora   }}"
+
+
+- name: "horacerta"
+  service:
+     name: ntp
+     state: restarted
+
+
+
+    
