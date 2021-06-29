@@ -18,6 +18,12 @@
     name: mongodb
     state: started
     enable: yes
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_DATABASE=auth
+      - MONGO_INITDB_ROOT_PASSWORD=pass
+    ports:
+      - '27017:27017'
 
 - name: "copy.service"
   ansible.builtin.service:
@@ -35,6 +41,22 @@
      masked: no
      daemon_reload: yes
      daemon_reexec: yes
+  tags: start
+
+
+- name: "line"
+  ansible.builtin.lineinfile:
+      path: /opt/slacko-api/lineinfile.txt
+      regexp: '^opt'
+      insertafter: '^opt'
+      line: '/opt/slacko-api/ teste'
+
+   
+
+
+
+
+
 
 
 

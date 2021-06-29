@@ -5,8 +5,8 @@
 
   - name: Clone a repo with separate git directory
     ansible.builtin.git:
-      repo: https://github.com/LeonardoDG2084/iaac_slacko-api
-      dest: /opt/slacko-api/
+      repo: "{{ gitpath }}"
+      dest: "{{ path }}"
       force: yes
     tags:
       - gitclone
@@ -28,8 +28,7 @@
     copy:
         src: ntp.conf
         dest: "{{ ntppath }}"
-    notify: 
-      - horacerta
+
     tags: 
       - horacerta
      
@@ -62,6 +61,7 @@
         mode: 0755 
     tags: path
 
+#essa copia sobreescreve o arquivo clonado antes - em uso para teste do mdulo template
   - name: Copiar o script .sh parametrizavel
     template:
         src: slacko/templates/slacko-api.sh
@@ -105,25 +105,40 @@
 
   - name: Criar o container do mongodb xpress
     docker_container:
-      name: testing
+      name: mongoexpress
       image: mongo-express:0.54.0
       state: started
       restart: yes
+#     network_mode: host      
+      ports:
+          - '8081:8081'
+
+
       env: 
-        ME_CONFIG_MONGODB_ADMINUSERNAME=admin
-        ME_CONFIG_MONGODB_ADMINPASSWORD=pass
-        ME_CONFIG_MONGODB_SERVER=mongodb
-        ME_CONFIG_BASICAUTH_USERNAME=admin
-        ME_CONFIG_BASICAUTH_PASSWORD=1234
-
-
-
+        ME_CONFIG_MONGODB_ADMINUSERNAME: admin
+        ME_CONFIG_MONGODB_ADMINPASSWORD: pass
+        ME_CONFIG_MONGODB_SERVER: mongo
+        ME_CONFIG_MONGODB_URL: mongodb://127.0.0.1:27017
  
     become: true
-
     tags: 
       - deploy
-  
 
+  
+  - name: copiar arquivo parametrizvel para modificar
+    copy:
+        src: lineinfile.txt
+        dest: "{{ path }}"
+
+    tags: 
+      - line
+    notify:
+      - line
+
+
+
+  
+  
+    
 
 
