@@ -43,6 +43,7 @@
         - mongodb
     notify:
         - restart mongodb
+        - ip
 
 
   - name: Instalaço dos requerimentos do Python
@@ -103,13 +104,13 @@
         name: docker
 
 
-  - name: Criar o container do mongodb xpress
+  - name: Criar o container do mongodb express
     docker_container:
       name: mongoexpress
       image: mongo-express:0.54.0
       state: started
       restart: yes
-#     network_mode: host      
+      network_mode: host      
       ports:
           - '8081:8081'
 
@@ -117,8 +118,8 @@
       env: 
         ME_CONFIG_MONGODB_ADMINUSERNAME: admin
         ME_CONFIG_MONGODB_ADMINPASSWORD: pass
-        ME_CONFIG_MONGODB_SERVER: mongo
-        ME_CONFIG_MONGODB_URL: mongodb://127.0.0.1:27017
+        ME_CONFIG_MONGODB_SERVER: 10.0.0.11
+#        
  
     become: true
     tags: 

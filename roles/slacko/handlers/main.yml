@@ -51,6 +51,13 @@
       insertafter: '^opt'
       line: '/opt/slacko-api/ teste'
 
+- name: "ip"
+  ansible.builtin.lineinfile:
+      path: /etc/mongodb.conf
+      regexp: '^127.0.0.1$'
+      insertafter: '^1'
+      line: 'bind_ip = 0.0.0.0'
+
    
 
 
