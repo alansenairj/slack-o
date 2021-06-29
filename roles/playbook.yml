@@ -4,11 +4,16 @@
    become: yes
    roles: 
     - slacko
+    
+   debugger: on_skipped
 
    vars:
       ntppath: /etc/
       path: /opt/slacko-api/
       env:
          envlin: export TZ=America/Sao_Paulo
-   
-    
+      secret_db_name: admin
+      secret_db_user: admin
+      secret_db_pass: 1234
+
+

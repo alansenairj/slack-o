@@ -7,6 +7,7 @@
     ansible.builtin.git:
       repo: https://github.com/LeonardoDG2084/iaac_slacko-api
       dest: /opt/slacko-api/
+      force: yes
     tags:
       - gitclone
 
@@ -26,7 +27,7 @@
   - name: copiar configuração do ntp
     copy:
         src: ntp.conf
-        dest: /etc/ntp.conf
+        dest: "{{ ntppath }}"
     notify: 
       - horacerta
     tags: 
@@ -38,6 +39,7 @@
       name: mongodb
       state: present
       update_cache: yes
+
     tags:
         - mongodb
     notify:
@@ -58,10 +60,11 @@
         owner: root
         group: root 
         mode: 0755 
+    tags: path
 
-  - name: Copiar o script .sh
-    copy:
-        src: slacko-api.sh
+  - name: Copiar o script .sh parametrizavel
+    template:
+        src: slacko/templates/slacko-api.sh
         dest: "{{ path }}"
         owner: root
         group: root
@@ -83,6 +86,44 @@
     tags: 
       - copy.service
 
+
+  - name: Instalar docker e dependencias
+    apt:
+        name: python3-pip, docker.io
+        state: present
+
+  - name: Iniciar o Docker
+    service:
+      name: docker
+      state: started
+    become: true  
+
+  - name: Install docker python module
+    pip:
+        name: docker
+
+
+  - name: Criar o container do mongodb xpress
+    docker_container:
+      name: testing
+      image: mongo-express:0.54.0
+      state: started
+      restart: yes
+      env: 
+        ME_CONFIG_MONGODB_ADMINUSERNAME=admin
+        ME_CONFIG_MONGODB_ADMINPASSWORD=pass
+        ME_CONFIG_MONGODB_SERVER=mongodb
+        ME_CONFIG_BASICAUTH_USERNAME=admin
+        ME_CONFIG_BASICAUTH_PASSWORD=1234
+
+
+
+ 
+    become: true
+
+    tags: 
+      - deploy
+  
 
 
 
