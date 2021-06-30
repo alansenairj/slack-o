@@ -30,6 +30,8 @@ sudo nano /etc/mongodb.conf
 bind_ip = 0.0.0.0
 
 O playbook realiza todas as tratativas para que o serviço suba sem problemas e de forma automatizada. 
+Playbook ajusta Timezone para SP
+Playbook instala e sincroniza NTP
 
 
 
