@@ -1,4 +1,4 @@
-# slack-o - Máquinas Vagrant provisionam através de roles do ansible uma infra para deploy de mongodb com integração de container mongodb-express
+# slack-o - Máquinas Vagrant provisionam através de roles do ansible uma infra para deploy de mongodb com integração de container mongodb-express e uma API Restful para consultas simples 
 
 Aplicação para criação de playbook da tarefa final MBA Impacta
 
