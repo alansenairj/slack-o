@@ -136,6 +136,20 @@
     notify:
       - line
 
+  - name: testar API
+    uri: 
+      url: http://10.0.0.11:8000/healthcheck
+      method: GET
+      return_content: yes
+      body_format: json
+    register: webpage
+    tags: 
+      - api
+
+  
+
+      
+
 
 
   

@@ -58,6 +58,11 @@
       insertafter: '^1'
       line: 'bind_ip = 0.0.0.0'
 
+
+- name: "api"
+  fail: 
+  when: "'running' not in webpage.content"
+
    
 
 
